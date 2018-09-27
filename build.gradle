@@ -1,0 +1,75 @@
+plugins {
+    id "com.github.maiflai.scalatest" version "0.19"
+    id 'com.github.johnrengelman.shadow' version '2.0.0'
+}
+
+apply plugin: 'application'
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+mainClassName = 'org.akka_starter.Main'
+
+apply plugin: 'com.github.johnrengelman.shadow'
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(ScalaCompile) {
+    ScalaCompileOptions.metaClass.daemonServer = true
+    ScalaCompileOptions.metaClass.fork = true
+    ScalaCompileOptions.metaClass.useAnt = false
+    ScalaCompileOptions.metaClass.useCompileDaemon = false
+}
+
+def scalaVersion = "2.11"
+def akkaVersion = "10.1.2"
+def scalaTestVersion = "3.0.5"
+def sttpVersion = "1.1.13"
+
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/resources"
+        }
+    }
+}
+
+dependencies {
+
+    // HTTP server
+    compile group: "com.typesafe.akka", name: "akka-http_${scalaVersion}", version: akkaVersion
+    compile group: "com.typesafe.akka", name: "akka-stream_${scalaVersion}", version: "2.5.13"
+    compile group: "com.typesafe.akka", name: "akka-http-core_${scalaVersion}", version: akkaVersion
+
+    // Support of CORS requests,, version depends on akka-http
+    compile group: "ch.megard", name: "akka-http-cors_${scalaVersion}", version: "0.3.0"
+
+    // Spray Json
+    compile group: "io.spray", name: "spray-json_${scalaVersion}", version: "1.3.4"
+
+    // Spray Json support for akka
+    compile group: "com.typesafe.akka", name: "akka-http-spray-json_${scalaVersion}", version: "10.0.1"
+
+    // Http client, used currently only for IT test
+    testCompile group: "com.softwaremill.sttp", name: "core_${scalaVersion}", version: sttpVersion
+    testCompile group: "com.softwaremill.sttp", name: "akka-http-backend_${scalaVersion}", version: sttpVersion
+
+    testCompile group: "org.scalatest", name: "scalatest_${scalaVersion}", version: scalaTestVersion
+    testCompile group: "com.typesafe.akka", name: "akka-http-testkit_${scalaVersion}", version: akkaVersion
+    testCompile group: "org.mockito", name: "mockito-all", version: "1.9.5"
+    testRuntime group: "org.pegdown", name: "pegdown", version: "1.6.0"
+}
+
+run {
+    mainClassName = mainClassName
+    standardInput = System.in
+}
+
+shadowJar {
+    classifier = 'shadow'
+    mainClassName = mainClassName
+    append 'reference.conf'
+    destinationDir new File("./build/target")
+    zip64 true
+}
