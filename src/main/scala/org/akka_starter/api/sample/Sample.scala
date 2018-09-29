@@ -30,7 +30,7 @@ class Sample(implicit executionContext: ExecutionContext, actorSystem: ActorSyst
         new ExceptionRoute().route
       } ~
       pathEndOrSingleSlash {
-        complete("End")
+        complete("End Of Sample")
       }
   }
 }

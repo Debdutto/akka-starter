@@ -1,7 +1,6 @@
 FROM openjdk:8-jdk AS BUILD_IMAGE
 
-RUN apk --no-cache update && \
-    apk --no-cache add openjdk8
+RUN apt-get update
 
 RUN mkdir /home/akka-starter
 

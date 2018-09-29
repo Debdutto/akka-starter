@@ -31,7 +31,7 @@ class Combo(implicit executionContext: ExecutionContext, actorSystem: ActorSyste
 
   val getRoute: Route = {
     get
-    parameters('userId.?) { userId =>
+    parameters('userId.as[String]) { userId =>
       val response = GetResponse(message = StatusCodes.OK.defaultMessage, data = s"You again? Bug off $userId").toHttpResponse
       complete(response)
     }

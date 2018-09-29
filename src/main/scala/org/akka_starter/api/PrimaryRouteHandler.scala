@@ -26,7 +26,7 @@ class PrimaryRouteHandler(implicit executionContext: ExecutionContext, actorSyst
           handleExceptions(PrimaryExceptionHandler.handler) {
             cors() {
               encodeResponseWith(Gzip) {
-                path("sample") {
+                pathPrefix("sample") {
                   new Sample().handler
                 } ~
                   path("ping") {
