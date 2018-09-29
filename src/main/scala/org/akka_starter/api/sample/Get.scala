@@ -16,7 +16,7 @@ import scala.concurrent.ExecutionContext
 class Get(implicit executionContext: ExecutionContext) {
   val route: Route = {
     get
-    parameters('userId.?) { userId =>
+    parameters('userId.as[String]) { userId =>
       val response = GetResponse(message = StatusCodes.OK.defaultMessage, data = s"Got userId=$userId. What am I supposed to do with it? Huh?").toHttpResponse
       complete(response)
     }

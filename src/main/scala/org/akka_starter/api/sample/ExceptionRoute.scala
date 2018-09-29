@@ -14,8 +14,7 @@ import scala.concurrent.ExecutionContext
   */
 class ExceptionRoute(implicit executionContext: ExecutionContext, actorSystem: ActorSystem) extends Directives {
   val route: Route = {
-    get
-    parameters('userId.?) { userId =>
+    get {
       // Let's play some catch
       throw new Exception("I'm not a ball, why all this throwing and shit man?")
       complete(StatusCodes.OK)
