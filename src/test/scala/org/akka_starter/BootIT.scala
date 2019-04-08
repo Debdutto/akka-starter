@@ -21,7 +21,7 @@ class BootIT extends BaseServiceTest {
     "bind on port successfully and answer on health checks" in {
       awaitForResult(for {
         serverBinding <- Main.start()
-        healthCheckResponse <- sttp.get(uri"http://localhost:9000/ping").send()
+        healthCheckResponse <- sttp.get(uri"http://localhost:8080/ping").send()
         _ <- serverBinding.unbind()
       } yield {
         healthCheckResponse.code shouldBe 200
